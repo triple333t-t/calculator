@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>حاسبة السعرات | تربل تي</title>
+<meta name="description" content="احسب احتياجك اليومي من السعرات والبروتين والكارب والدهون حسب هدفك — من تربل تي TRIPLE-T.">
+<meta name="theme-color" content="#1D1C1E">
+<meta property="og:title" content="حاسبة السعرات | تربل تي">
+<meta property="og:description" content="احسب سعراتك وماكروزك حسب هدفك: تنشيف، ثبات أو تضخيم.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 848 712'%3E%3Cpath fill='%23F0B630' d='M40 258H165L127 450H0ZM236 97H404L285 612H120ZM462 0H625L568 251L848 245L790 450H522L462 712H300Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
+<style>
+:root{
+  --ink:#1D1C1E; --ink2:#262528; --ink3:#2F2E31; --line:#3A393C;
+  --gold:#F0B630; --gold2:#F6D88E; --cream:#FFF8E6;
+  --text:#F4F1EA; --muted:#A9A6A0; --danger:#E5604D;
+  --grad:linear-gradient(90deg,#FFF8E6 0%,#F6D88E 45%,#F0B630 100%);
+  --gradR:linear-gradient(270deg,#FFF8E6 0%,#F6D88E 45%,#F0B630 100%);
+  --r:16px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;background:var(--ink);color:var(--text);font-family:'Tajawal',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input{font-family:inherit}
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg::before,.bg::after{content:"";position:absolute;width:70vmax;height:70vmax;border-radius:50%;filter:blur(40px)}
+.bg::before{top:-35vmax;left:-30vmax;background:radial-gradient(closest-side,rgba(240,182,48,.16),transparent)}
+.bg::after{bottom:-40vmax;right:-35vmax;background:radial-gradient(closest-side,rgba(240,182,48,.10),transparent)}
+.bg svg{position:absolute;width:115vmin;left:-28vmin;bottom:-14vmin;opacity:.045;animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(4vmin,-3vmin) rotate(-2deg)}}
+@media (prefers-reduced-motion:reduce){.bg svg{animation:none}}
+
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:20px 16px 40px}
+
+/* brand lockup */
+.lock{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 22px}
+.lock svg{width:46px;height:auto;flex:none}
+.lock .names{display:flex;flex-direction:column;line-height:1.1}
+.lock .ar{font-weight:900;font-size:22px}
+.lock .ar b{color:var(--gold);font-weight:900}
+.lock .en{direction:ltr;font-weight:800;font-style:italic;font-size:12px;letter-spacing:.32em;color:#fff;opacity:.9;margin-top:4px}
+
+.hero{text-align:center;margin-bottom:22px}
+.hero h1{margin:0;font-size:clamp(30px,8vw,40px);font-weight:900;line-height:1.2}
+.gtext{background:var(--gradR);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:8px auto 0;color:var(--muted);font-size:16px;max-width:400px}
+
+.card{background:rgba(38,37,40,.86);border:1px solid var(--line);border-radius:22px;padding:20px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.card + .card{margin-top:16px}
+
+.field{margin-bottom:20px}
+.field:last-of-type{margin-bottom:0}
+.lab{display:flex;align-items:center;gap:8px;font-weight:800;font-size:16px;margin-bottom:10px}
+.lab svg{width:20px;height:20px;flex:none;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* segmented choices */
+.seg{display:grid;gap:8px}
+.seg.c2{grid-template-columns:1fr 1fr}
+.seg.c3{grid-template-columns:repeat(3,1fr)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:52px;padding:8px 6px;border-radius:14px;background:var(--ink);border:1.5px solid var(--line);font-weight:800;font-size:16px;cursor:pointer;transition:border-color .15s,background .15s,color .15s;user-select:none}
+.seg label small{display:block;font-weight:500;font-size:12px;color:var(--muted);margin-top:2px}
+.seg input:checked + label{border-color:var(--gold);background:rgba(240,182,48,.10);color:var(--gold)}
+.seg input:focus-visible + label{outline:2px solid var(--gold);outline-offset:2px}
+
+/* activity list */
+.acts{display:grid;gap:8px}
+.acts input{position:absolute;opacity:0;pointer-events:none}
+.acts label{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--ink);border:1.5px solid var(--line);cursor:pointer;transition:border-color .15s,background .15s}
+.acts .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;position:relative;transition:border-color .15s}
+.acts .dot::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--gold);transform:scale(0);transition:transform .15s}
+.acts .t{font-weight:800;font-size:15px}
+.acts .d{display:block;font-size:13px;color:var(--muted);font-weight:500}
+.acts input:checked + label{border-color:var(--gold);background:rgba(240,182,48,.08)}
+.acts input:checked + label .dot{border-color:var(--gold)}
+.acts input:checked + label .dot::after{transform:scale(1)}
+.acts input:focus-visible + label{outline:2px solid var(--gold);outline-offset:2px}
+
+/* number inputs */
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.num{position:relative}
+.num span{display:block;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:6px}
+.num .box{display:flex;align-items:center;background:var(--ink);border:1.5px solid var(--line);border-radius:14px;transition:border-color .15s}
+.num .box:focus-within{border-color:var(--gold)}
+.num input{width:100%;min-width:0;background:transparent;border:0;outline:0;color:var(--text);font-size:20px;font-weight:800;padding:12px 10px;text-align:center;direction:ltr}
+.num input::placeholder{color:#5d5b60;font-weight:700}
+.num em{font-style:normal;color:var(--muted);font-size:12px;font-weight:700;padding-left:10px}
+.num.bad .box{border-color:var(--danger)}
+.err{color:var(--danger);font-size:14px;font-weight:700;margin-top:10px;min-height:0}
+.err:empty{display:none}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;margin-top:22px;border:0;border-radius:16px;background:var(--grad);color:var(--ink);font-weight:900;font-size:18px;cursor:pointer;text-decoration:none;transition:transform .12s,filter .15s;box-shadow:0 10px 30px -10px rgba(240,182,48,.55)}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:scale(.98)}
+.btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.btn.ghost{background:transparent;color:var(--text);border:1.5px solid var(--line);box-shadow:none;margin-top:10px;font-size:16px;min-height:50px}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* results */
+#result{display:none;scroll-margin-top:16px}
+#result.on{display:block;animation:rise .45s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.kcal{text-align:center;padding:6px 0 4px}
+.kcal .cap{color:var(--muted);font-weight:700;font-size:15px}
+.kcal .big{font-size:clamp(56px,17vw,76px);font-weight:900;line-height:1.05;direction:ltr;letter-spacing:-.01em}
+.kcal .unit{font-weight:800;font-size:17px;margin-top:2px}
+.kcal .unit b{color:var(--gold)}
+.note{margin:12px 0 0;padding:10px 12px;border-radius:12px;background:rgba(240,182,48,.08);border:1px solid rgba(240,182,48,.25);font-size:14px;color:var(--gold2);text-align:center}
+.note:empty{display:none}
+
+.split{display:flex;height:12px;border-radius:8px;overflow:hidden;margin:20px 0 14px;background:var(--ink)}
+.split i{display:block;height:100%;transition:width .6s ease-out}
+.m-p{background:var(--gold)} .m-c{background:var(--gold2)} .m-f{background:var(--cream)}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mac{background:var(--ink);border:1px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center}
+.mac .n{display:flex;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:14px}
+.mac .n i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.mac .g{font-size:28px;font-weight:900;direction:ltr;line-height:1.2;margin-top:4px}
+.mac .g small{font-size:14px;font-weight:800;color:var(--muted);margin-left:2px}
+.mac .k{font-size:12px;color:var(--muted);font-weight:600}
+
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.fact{border-radius:14px;padding:10px 6px;text-align:center;border:1px dashed var(--line)}
+.fact b{display:block;font-size:18px;font-weight:900;direction:ltr}
+.fact span{font-size:12px;color:var(--muted);font-weight:600;line-height:1.35;display:block}
+
+.tips{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+.tips li{display:flex;gap:10px;font-size:15px;line-height:1.55}
+.tips li::before{content:"";flex:none;width:8px;height:8px;margin-top:8px;background:var(--gold);transform:skewX(-14deg);border-radius:1px}
+
+.h2{font-size:20px;font-weight:900;margin:0 0 6px}
+.cta{position:relative;overflow:hidden;border-color:rgba(240,182,48,.45);background:linear-gradient(160deg,rgba(240,182,48,.16),rgba(38,37,40,.92) 55%)}
+.cta p{margin:0;color:var(--muted);font-size:15px}
+.cta svg.mark{position:absolute;width:150px;left:-30px;top:-24px;opacity:.08}
+
+.disc{margin:22px 4px 0;font-size:12.5px;color:#8b8890;line-height:1.7;text-align:center}
+footer{margin-top:26px;text-align:center}
+footer .lock{margin:0 0 6px}
+footer .lock svg{width:30px}
+footer .lock .ar{font-size:16px}
+footer .lock .en{font-size:10px}
+footer small{color:#77747b;font-size:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--cream);color:var(--ink);font-weight:800;padding:10px 18px;border-radius:12px;transition:.25s;z-index:5;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:360px){.seg label{font-size:14px}.mac .g{font-size:23px}.num input{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><svg viewBox="0 0 848 712"><use href="#tt-logo"/></svg></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="tt-g" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#FFF8E6"/><stop offset=".45" stop-color="#F6D88E"/><stop offset="1" stop-color="#F0B630"/>
+    </linearGradient>
+    <g id="tt-logo">
+      <path fill="url(#tt-g)" d="M40 258H165L127 450H0Z"/>
+      <path fill="url(#tt-g)" d="M236 97H404L285 612H120Z"/>
+      <path fill="url(#tt-g)" d="M462 0H625L568 251L848 245L790 450H522L462 712H300Z"/>
+    </g>
+  </defs>
+</svg>
+
+<main class="wrap">
+  <div class="lock" aria-label="تربل تي TRIPLE-T">
+    <svg viewBox="0 0 848 712" aria-hidden="true"><use href="#tt-logo"/></svg>
+    <div class="names"><span class="ar">تربل <b>تي</b></span><span class="en">TRIPLE-T</span></div>
+  </div>
+
+  <header class="hero">
+    <h1>حاسبة <span class="gtext">السعرات</span></h1>
+    <p>اعرف كم تحتاج سعرة باليوم، وكم بروتين وكارب ودهون حسب هدفك.</p>
+  </header>
+
+  <form class="card" id="calc" novalidate>
+    <div class="field">
+      <div class="lab"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c.6-4 3.4-6.5 7-6.5s6.4 2.5 7 6.5"/></svg>الجنس</div>
+      <div class="seg c2">
+        <input type="radio" name="sex" id="sx-m" value="m" checked><label for="sx-m">ذكر</label>
+        <input type="radio" name="sex" id="sx-f" value="f"><label for="sx-f">أنثى</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="lab"><svg viewBox="0 0 24 24"><path d="M4 16 16 4l4 4L8 20z"/><path d="m8 12 2 2M11 9l2 2M14 6l2 2"/></svg>بياناتك</div>
+      <div class="nums">
+        <label class="num" id="f-age"><span>العمر</span><div class="box"><input id="age" inputmode="numeric" autocomplete="off" placeholder="25" maxlength="3"><em>سنة</em></div></label>
+        <label class="num" id="f-h"><span>الطول</span><div class="box"><input id="height" inputmode="decimal" autocomplete="off" placeholder="175" maxlength="5"><em>سم</em></div></label>
+        <label class="num" id="f-w"><span>الوزن</span><div class="box"><input id="weight" inputmode="decimal" autocomplete="off" placeholder="80" maxlength="5"><em>كجم</em></div></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="lab"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>مستوى نشاطك</div>
+      <div class="acts">
+        <input type="radio" name="act" id="a1" value="1.2"><label for="a1"><span class="dot"></span><span><span class="t">قليل الحركة</span><span class="d">عمل مكتبي وبدون تمارين</span></span></label>
+        <input type="radio" name="act" id="a2" value="1.375"><label for="a2"><span class="dot"></span><span><span class="t">نشاط خفيف</span><span class="d">تمرين 1 إلى 3 أيام بالأسبوع</span></span></label>
+        <input type="radio" name="act" id="a3" value="1.55" checked><label for="a3"><span class="dot"></span><span><span class="t">نشاط متوسط</span><span class="d">تمرين 3 إلى 5 أيام بالأسبوع</span></span></label>
+        <input type="radio" name="act" id="a4" value="1.725"><label for="a4"><span class="dot"></span><span><span class="t">نشاط عالي</span><span class="d">تمرين 6 إلى 7 أيام بالأسبوع</span></span></label>
+        <input type="radio" name="act" id="a5" value="1.9"><label for="a5"><span class="dot"></span><span><span class="t">نشاط عالي جدًا</span><span class="d">تمرين يومي شاق أو عمل بدني</span></span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="lab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8" fill="#F0B630"/></svg>هدفك</div>
+      <div class="seg c3">
+        <input type="radio" name="goal" id="g-cut" value="cut" checked><label for="g-cut">تنشيف<small>نزول دهون</small></label>
+        <input type="radio" name="goal" id="g-keep" value="keep"><label for="g-keep">ثبات<small>نفس الوزن</small></label>
+        <input type="radio" name="goal" id="g-bulk" value="bulk"><label for="g-bulk">تضخيم<small>زيادة عضل</small></label>
+      </div>
+    </div>
+
+    <div class="err" id="err" role="alert"></div>
+    <button class="btn" type="submit"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h4"/></svg>احسب سعراتي</button>
+  </form>
+
+  <section id="result" aria-live="polite">
+    <div class="card">
+      <div class="kcal">
+        <div class="cap" id="r-cap">احتياجك اليومي</div>
+        <div class="big gtext" id="r-kcal">0</div>
+        <div class="unit">سعرة حرارية <b>باليوم</b></div>
+      </div>
+      <p class="note" id="r-note"></p>
+
+      <div class="split" aria-hidden="true"><i class="m-p" id="s-p"></i><i class="m-c" id="s-c"></i><i class="m-f" id="s-f"></i></div>
+      <div class="macros">
+        <div class="mac"><div class="n"><i class="m-p"></i>بروتين</div><div class="g"><span id="r-p">0</span><small>g</small></div><div class="k" id="r-pk"></div></div>
+        <div class="mac"><div class="n"><i class="m-c"></i>كارب</div><div class="g"><span id="r-c">0</span><small>g</small></div><div class="k" id="r-ck"></div></div>
+        <div class="mac"><div class="n"><i class="m-f"></i>دهون</div><div class="g"><span id="r-f">0</span><small>g</small></div><div class="k" id="r-fk"></div></div>
+      </div>
+
+      <div class="facts">
+        <div class="fact"><b id="r-bmr">0</b><span>الحرق الأساسي<br>وأنت مرتاح</span></div>
+        <div class="fact"><b id="r-tdee">0</b><span>احتياجك<br>للثبات</span></div>
+        <div class="fact"><b id="r-water">0</b><span>لتر ماء<br>تقريبًا باليوم</span></div>
+      </div>
+
+      <ul class="tips" id="r-tips"></ul>
+    </div>
+
+    <div class="card cta">
+      <svg class="mark" viewBox="0 0 848 712" aria-hidden="true"><use href="#tt-logo"/></svg>
+      <h2 class="h2">رقمك جاهز، الحين وقت الخطة</h2>
+      <p>جدول تمارين من تربل تي مبني على هدفك، فيه شرح فيديو لكل تمرين، والكارديو والإحماء المناسب لك.</p>
+      <a class="btn" id="cta-store" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>تصفح الجداول</a>
+      <button class="btn ghost" type="button" id="share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1"/></svg>شارك الحاسبة مع صاحبك</button>
+    </div>
+  </section>
+
+  <p class="disc">النتيجة تقديرية مبنية على معادلة Mifflin-St Jeor المعتمدة، وتختلف من شخص لآخر. الحاسبة مو بديل عن استشارة الطبيب أو أخصائي التغذية، وما تناسب الحامل والمرضع ومن عنده حالة صحية أو أقل من 18 سنة. بياناتك ما تنرسل لأي جهة، الحساب كله يصير على جهازك.</p>
+
+  <footer>
+    <div class="lock">
+      <svg viewBox="0 0 848 712" aria-hidden="true"><use href="#tt-logo"/></svg>
+      <div class="names"><span class="ar">تربل <b>تي</b></span><span class="en">TRIPLE-T</span></div>
+    </div>
+    <small>© <span id="yr"></span> تربل تي</small>
+  </footer>
+</main>
+<div class="toast" id="toast">انتسخ الرابط</div>
+
+<script>
+/* ===== الإعدادات: غيّر الروابط هنا ===== */
+const CONFIG = {
+  storeUrl: '#',   // رابط صفحة الجداول في متجر سلة
+};
+
+(function(){
+  const $ = id => document.getElementById(id);
+  $('yr').textContent = new Date().getFullYear();
+  if (CONFIG.storeUrl && CONFIG.storeUrl !== '#') $('cta-store').href = CONFIG.storeUrl;
+
+  // يقبل الأرقام العربية والفارسية والفاصلة
+  const toNum = s => {
+    s = String(s || '').trim()
+      .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+      .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+      .replace(/[٫,]/g, '.');
+    return s === '' ? NaN : Number(s);
+  };
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+  const radio = name => document.querySelector(`input[name="${name}"]:checked`).value;
+
+  const KEY = 'tt-calc-v1';
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (s) {
+      ['age','height','weight'].forEach(k => { if (s[k]) $(k).value = s[k]; });
+      [['sex',s.sex],['act',s.act],['goal',s.goal]].forEach(([n,v]) => {
+        const el = v && document.querySelector(`input[name="${n}"][value="${v}"]`); if (el) el.checked = true;
+      });
+    }
+  } catch (e) {}
+
+  function calc({sex, age, h, w, act, goal}) {
+    const bmr = 10*w + 6.25*h - 5*age + (sex === 'm' ? 5 : -161);
+    const tdee = bmr * act;
+    const floor = sex === 'm' ? 1500 : 1200;
+    let kcal = goal === 'cut' ? tdee * 0.8 : goal === 'bulk' ? tdee * 1.1 : tdee;
+    let floored = false;
+    if (goal === 'cut' && kcal < floor) { kcal = Math.min(floor, tdee); floored = true; }
+    kcal = Math.round(kcal / 10) * 10;
+
+    // البروتين على وزن مرجعي (حد أعلى عند مؤشر كتلة 27) عشان ما يبالغ لأصحاب الوزن العالي
+    const refW = Math.min(w, 27 * (h/100) ** 2);
+    const pPerKg = goal === 'cut' ? 2.0 : 1.8;
+    let p = refW * pPerKg;
+    let f = Math.max(kcal * 0.25 / 9, refW * 0.6);
+    let c = (kcal - p*4 - f*9) / 4;
+    if (c < 50) { c = 50; f = Math.max((kcal - p*4 - c*4) / 9, refW * 0.5); p = (kcal - c*4 - f*9) / 4; }
+    return {bmr, tdee, kcal, floored, p, c, f, water: w * 0.035};
+  }
+
+  const TIPS = {
+    cut: ['التزم بالرقم أسبوعين ووزن نفسك الصبح على الريق. نزول نص كيلو إلى كيلو بالأسبوع ممتاز.',
+          'إذا ثبت وزنك أسبوعين ورا بعض، نقّص 100 إلى 150 سعرة، أو زد الكارديو شوي.',
+          'لا تنزل بالبروتين أبدًا وأنت تنشف، هو اللي يحافظ على عضلك.'],
+    keep: ['هذا رقم الثبات التقريبي. راقب وزنك أسبوعين وعدّل 100 سعرة حسب اتجاهه.',
+           'وزّع البروتين على 3 إلى 4 وجبات خلال اليوم.',
+           'الثبات وقت ممتاز تركز فيه على القوة والأداء الصحيح.'],
+    bulk: ['زيادة ربع كيلو إلى نص كيلو بالأسبوع تكفي. أكثر من كذا غالبًا دهون.',
+           'إذا ما زاد وزنك بعد أسبوعين، زد 100 إلى 150 سعرة من الكارب.',
+           'التضخيم بدون تمرين مقاومة منتظم يتحول دهون، فالالتزام بالجدول أهم شي.']
+  };
+  const CAPS = {cut:'عشان تنشف', keep:'عشان تثبت على وزنك', bulk:'عشان تبني عضل'};
+
+  function countUp(el, to, ms) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { el.textContent = fmt(to); return; }
+    const t0 = performance.now();
+    const step = t => { const k = Math.min(1, (t - t0) / ms); el.textContent = fmt(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+    setTimeout(() => { el.textContent = fmt(to); }, ms + 80); // in case rAF is paused (background tab)
+  }
+
+  const fields = {age:['f-age',15,80,'العمر لازم يكون بين 15 و80 سنة'], height:['f-h',130,230,'الطول بالسنتيمتر، بين 130 و230'], weight:['f-w',35,250,'الوزن بالكيلو، بين 35 و250']};
+  ['age','height','weight'].forEach(k => $(k).addEventListener('input', () => $(fields[k][0]).classList.remove('bad')));
+
+  $('calc').addEventListener('submit', e => {
+    e.preventDefault();
+    const vals = {}; const errs = [];
+    for (const k of ['age','height','weight']) {
+      const [fid, lo, hi, msg] = fields[k]; const v = toNum($(k).value);
+      if (!(v >= lo && v <= hi)) { $(fid).classList.add('bad'); errs.push(msg); } else { $(fid).classList.remove('bad'); vals[k] = v; }
+    }
+    if (errs.length) { $('err').textContent = errs[0]; return; }
+    $('err').textContent = '';
+
+    const input = {sex: radio('sex'), age: vals.age, h: vals.height, w: vals.weight, act: Number(radio('act')), goal: radio('goal')};
+    try { localStorage.setItem(KEY, JSON.stringify({age:$('age').value, height:$('height').value, weight:$('weight').value, sex:input.sex, act:radio('act'), goal:input.goal})); } catch (e) {}
+
+    const r = calc(input);
+    $('r-cap').textContent = 'احتياجك اليومي ' + CAPS[input.goal];
+    countUp($('r-kcal'), r.kcal, 900);
+    $('r-note').textContent = r.floored ? 'رفعنا الرقم للحد الأدنى الآمن. النزول تحت هالمستوى بدون إشراف مختص ما ننصح فيه.' : (vals.age < 18 ? 'عمرك أقل من 18، الأفضل تراجع مختص قبل أي نظام تنشيف أو تضخيم.' : '');
+
+    const pk = r.p*4, ck = r.c*4, fk = r.f*9, tot = pk + ck + fk;
+    $('r-p').textContent = fmt(r.p); $('r-c').textContent = fmt(r.c); $('r-f').textContent = fmt(r.f);
+    $('r-pk').textContent = fmt(pk) + ' سعرة'; $('r-ck').textContent = fmt(ck) + ' سعرة'; $('r-fk').textContent = fmt(fk) + ' سعرة';
+    const bars = [['s-p',pk],['s-c',ck],['s-f',fk]];
+    bars.forEach(([id]) => { $(id).style.width = '0'; });
+    setTimeout(() => bars.forEach(([id,v]) => { $(id).style.width = (v/tot*100).toFixed(1) + '%'; }), 60);
+    $('r-bmr').textContent = fmt(r.bmr); $('r-tdee').textContent = fmt(r.tdee);
+    $('r-water').textContent = (Math.round(r.water * 2) / 2).toFixed(1);
+    $('r-tips').innerHTML = TIPS[input.goal].map(t => `<li>${t}</li>`).join('');
+
+    const res = $('result'); res.classList.remove('on'); void res.offsetWidth; res.classList.add('on');
+    res.scrollIntoView({behavior: 'smooth', block: 'start'});
+  });
+
+  function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 1800); }
+  $('share').addEventListener('click', async () => {
+    const data = {title: 'حاسبة السعرات | تربل تي', text: 'احسب سعراتك وماكروزك حسب هدفك من تربل تي', url: location.href};
+    try {
+      if (navigator.share) { await navigator.share(data); return; }
+      await navigator.clipboard.writeText(location.href); toast('انتسخ الرابط');
+    } catch (e) { if (e && e.name !== 'AbortError') toast('انسخ الرابط من المتصفح'); }
+  });
+})();
+</script>
+</body>
+</html>
