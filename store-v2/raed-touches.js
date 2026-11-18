@@ -22,13 +22,13 @@
     '.store-header{transition:box-shadow .3s ease}',
     'body.tt-scrolled .store-header{box-shadow:0 10px 30px rgba(0,0,0,.45),0 1px 0 rgba(247,211,122,.35)}',
 
-    '.tt-reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}',
+    '.tt-reveal{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}',
     '.tt-reveal.tt-in{opacity:1;transform:none}',
 
-    '.s-button-primary,.btn--primary,.s-button-btn.s-button-primary{position:relative;overflow:hidden}',
-    '.s-button-primary::after,.btn--primary::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;',
+    '.s-button-primary,.s-button-primary-outline,.btn--primary{position:relative;overflow:hidden}',
+    '.s-button-primary::after,.s-button-primary-outline::after,.btn--primary::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;',
     'background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);pointer-events:none}',
-    '.s-button-primary:hover::after,.btn--primary:hover::after{animation:tt-shine .8s ease}',
+    '.s-button-primary:hover::after,.s-button-primary-outline:hover::after,.btn--primary:hover::after{animation:tt-shine .8s ease}',
     '@keyframes tt-shine{to{left:130%}}',
 
     '.s-cart-summary-count.tt-bump{animation:tt-bump .6s cubic-bezier(.3,1.6,.5,1)}',
@@ -40,7 +40,7 @@
     '.tt-top.tt-show{opacity:1;transform:none;pointer-events:auto}',
     '.tt-top:hover{background:#ffe29a}',
     '.tt-top svg{width:20px;height:20px}',
-    '@media (prefers-reduced-motion:reduce){.s-button-primary:hover::after,.btn--primary:hover::after{animation:none}}'
+    '@media (prefers-reduced-motion:reduce){.s-button-primary:hover::after,.s-button-primary-outline:hover::after,.btn--primary:hover::after{animation:none}}'
   ].join('');
 
 
@@ -99,7 +99,7 @@
         var r = el.getBoundingClientRect();
         if (r.top < window.innerHeight * 0.92) return;
         var siblings = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
-        el.style.transitionDelay = Math.min(siblings, 5) * 70 + 'ms';
+        el.style.transitionDelay = Math.min(siblings, 4) * 60 + 'ms';
         el.classList.add('tt-reveal');
         io.observe(el);
       });
