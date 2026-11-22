@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>اختبار الجدول | تربل تي</title>
+<meta name="description" content="جاوب على أسئلة قصيرة ونقولك مستواك وأي جدول تمارين من تربل تي يناسبك.">
+<meta name="theme-color" content="#1D1C1E">
+<meta property="og:title" content="وش الجدول اللي يناسبك؟ | تربل تي">
+<meta property="og:description" content="10 أسئلة تحدد مستواك والجدول الأنسب لأيامك وهدفك.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 848 712'%3E%3Cpath fill='%23F0B630' d='M40 258H165L127 450H0ZM236 97H404L285 612H120ZM462 0H625L568 251L848 245L790 450H522L462 712H300Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Exo+2:wght@500&display=swap">
+<style>
+:root{
+  --ink:#1D1C1E; --ink2:#262528; --ink3:#2F2E31; --line:#3A393C;
+  --gold:#F0B630; --gold2:#F6D88E; --cream:#FFF8E6;
+  --text:#F4F1EA; --muted:#A9A6A0; --danger:#E5604D;
+  --grad:linear-gradient(90deg,#FFF8E6 0%,#F6D88E 45%,#F0B630 100%);
+  --gradR:linear-gradient(270deg,#FFF8E6 0%,#F6D88E 45%,#F0B630 100%);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;background:var(--ink);color:var(--text);font-family:'Tajawal',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font-family:inherit}
+.bg{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.bg::before,.bg::after{content:"";position:absolute;width:70vmax;height:70vmax;border-radius:50%;filter:blur(40px)}
+.bg::before{top:-35vmax;left:-30vmax;background:radial-gradient(closest-side,rgba(240,182,48,.16),transparent)}
+.bg::after{bottom:-40vmax;right:-35vmax;background:radial-gradient(closest-side,rgba(240,182,48,.10),transparent)}
+.bg svg{position:absolute;width:115vmin;left:-28vmin;bottom:-14vmin;opacity:.045;animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(4vmin,-3vmin) rotate(-2deg)}}
+@media (prefers-reduced-motion:reduce){.bg svg{animation:none}}
+
+.wrap{position:relative;max-width:560px;margin:0 auto;padding:20px 16px 40px}
+.toplogo{display:block;direction:ltr;width:min(100%,340px);height:auto;aspect-ratio:457/131;margin:4px auto 18px}
+.hero{text-align:center;margin-bottom:20px}
+.hero h1{margin:0;font-size:clamp(28px,7.5vw,38px);font-weight:900;line-height:1.25}
+.gtext{background:var(--gradR);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:8px auto 0;color:var(--muted);font-size:16px;max-width:420px}
+
+.card{background:rgba(38,37,40,.86);border:1px solid var(--line);border-radius:22px;padding:20px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.card + .card{margin-top:16px}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;margin-top:20px;border:0;border-radius:16px;background:var(--grad);color:var(--ink);font-weight:900;font-size:18px;cursor:pointer;text-decoration:none;transition:transform .12s,filter .15s;box-shadow:0 10px 30px -10px rgba(240,182,48,.55)}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:scale(.98)}
+.btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.btn.ghost{background:transparent;color:var(--text);border:1.5px solid var(--line);box-shadow:none;margin-top:10px;font-size:16px;min-height:50px}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn[hidden]{display:none}
+
+/* intro */
+.points{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.points li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px}
+.points svg{width:22px;height:22px;flex:none;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+.points b{display:block;font-weight:800}
+.points span{color:var(--muted);font-size:14px}
+
+/* quiz */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.back{flex:none;width:40px;height:40px;border-radius:12px;border:1.5px solid var(--line);background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer;transition:border-color .15s,color .15s}
+.back:hover{border-color:var(--gold);color:var(--gold)}
+.back:disabled{opacity:.3;cursor:default}
+.back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.prog{flex:1}
+.prog .bar{height:6px;border-radius:6px;background:var(--ink);overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:var(--gradR);transition:width .35s ease-out;margin-right:0}
+.prog .cnt{font-size:13px;color:var(--muted);font-weight:700;margin-top:6px;display:flex;justify-content:space-between}
+.qhead{display:flex;gap:10px;align-items:flex-start;margin-bottom:6px}
+.qhead svg{width:24px;height:24px;flex:none;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-top:4px}
+.q{font-size:21px;font-weight:900;line-height:1.4;margin:0}
+.qhint{color:var(--muted);font-size:14px;margin:4px 0 16px}
+.opts{display:grid;gap:10px}
+.opts.grid4{grid-template-columns:repeat(4,1fr)}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:right;padding:14px 14px;border-radius:14px;background:var(--ink);border:1.5px solid var(--line);color:var(--text);cursor:pointer;transition:border-color .15s,background .15s,transform .1s}
+.opt:hover{border-color:#5a585d}
+.opt:active{transform:scale(.99)}
+.opt .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;position:relative;transition:border-color .15s}
+.opt .dot::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--gold);transform:scale(0);transition:transform .15s}
+.opt .t{display:block;font-weight:800;font-size:16px}
+.opt .d{display:block;font-size:13px;color:var(--muted);font-weight:500;line-height:1.45}
+.opt.on{border-color:var(--gold);background:rgba(240,182,48,.09)}
+.opt.on .dot{border-color:var(--gold)}
+.opt.on .dot::after{transform:scale(1)}
+.opt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.opts.grid4 .opt{flex-direction:column;justify-content:center;text-align:center;gap:0;padding:14px 4px;min-height:84px}
+.opts.grid4 .opt .dot{display:none}
+.opts.grid4 .opt .t{font-size:30px;font-weight:900;line-height:1.1}
+.opts.grid4 .opt .d{font-size:13px}
+.opts.grid4 .opt.on .t{color:var(--gold)}
+.step{animation:slide .3s ease-out}
+@keyframes slide{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.step,#result.on{animation:none}}
+
+/* result */
+#result{display:none}
+#result.on{display:block;animation:rise .45s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.lvl{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.lvl .cap{color:var(--muted);font-weight:700;font-size:15px}
+.lvl .name{font-weight:900;font-size:22px}
+.meter{position:relative;height:10px;border-radius:8px;background:linear-gradient(270deg,rgba(255,248,230,.18),rgba(240,182,48,.55));margin:6px 0 4px}
+.meter i{position:absolute;top:50%;width:20px;height:20px;border-radius:50%;background:var(--gold);border:3px solid var(--ink);transform:translate(50%,-50%);right:0;transition:right .7s ease-out;box-shadow:0 0 0 2px var(--gold)}
+.meter-l{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:700}
+
+.pick{text-align:center;padding:6px 0 2px}
+.pick .cap{color:var(--muted);font-weight:700;font-size:15px}
+.pick .big{font-size:clamp(30px,8.5vw,40px);font-weight:900;line-height:1.25;margin-top:2px}
+.pick .days{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 12px;border-radius:999px;border:1px solid rgba(240,182,48,.4);color:var(--gold2);font-weight:800;font-size:14px}
+.match{display:flex;align-items:center;gap:10px;margin:18px 0 4px}
+.match .bar{flex:1;height:8px;border-radius:6px;background:var(--ink);overflow:hidden}
+.match .bar i{display:block;height:100%;width:0;background:var(--gradR);transition:width .8s ease-out}
+.match b{font-weight:900;direction:ltr;min-width:48px;text-align:left}
+.match span{font-size:13px;color:var(--muted);font-weight:700}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:16px}
+.week div{border-radius:10px;padding:8px 2px;text-align:center;font-size:11.5px;font-weight:800;line-height:1.3;min-height:54px;display:flex;flex-direction:column;justify-content:center}
+.week .tr{background:rgba(240,182,48,.12);border:1px solid rgba(240,182,48,.45);color:var(--gold2)}
+.week .rs{border:1px dashed var(--line);color:#77747b}
+.week small{display:block;font-size:10px;color:var(--muted);font-weight:700}
+.note{margin:14px 0 0;padding:10px 12px;border-radius:12px;background:rgba(240,182,48,.08);border:1px solid rgba(240,182,48,.25);font-size:14px;color:var(--gold2)}
+.note.warn{background:rgba(229,96,77,.08);border-color:rgba(229,96,77,.35);color:#f2a596}
+.note:empty{display:none}
+.h2{font-size:19px;font-weight:900;margin:0 0 10px}
+.tips{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.tips li{display:flex;gap:10px;font-size:15px;line-height:1.55}
+.tips li::before{content:"";flex:none;width:8px;height:8px;margin-top:8px;background:var(--gold);transform:skewX(-14deg);border-radius:1px}
+.alt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:14px;border:1px dashed var(--line);margin-top:10px}
+.alt b{display:block;font-weight:800;font-size:16px}
+.alt span{display:block;font-size:13px;color:var(--muted)}
+.alt em{font-style:normal;font-weight:900;color:var(--gold2);direction:ltr}
+.path{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:800}
+.path span{padding:6px 10px;border-radius:10px;border:1px solid var(--line);color:var(--muted)}
+.path span.now{border-color:var(--gold);color:var(--gold);background:rgba(240,182,48,.08)}
+.path svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ver{display:flex;gap:12px;align-items:flex-start}
+.ver svg{width:26px;height:26px;flex:none;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+.ver b{display:block;font-weight:900;font-size:17px}
+.ver p{margin:2px 0 0;color:var(--muted);font-size:14.5px}
+.cta{position:relative;overflow:hidden;border-color:rgba(240,182,48,.45);background:linear-gradient(160deg,rgba(240,182,48,.16),rgba(38,37,40,.92) 55%)}
+.cta svg.mark{position:absolute;width:150px;left:-30px;top:-24px;opacity:.08}
+.cta p{margin:0;color:var(--muted);font-size:15px}
+
+.disc{margin:22px 4px 0;font-size:12.5px;color:#8b8890;line-height:1.7;text-align:center}
+footer{margin-top:26px;text-align:center}
+.lock{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 6px}
+.lock svg{width:30px;height:auto;flex:none}
+.lock .names{display:flex;flex-direction:column;line-height:1.1}
+.lock .ar{font-weight:900;font-size:16px}
+.lock .ar b{color:var(--gold);font-weight:900}
+.lock .en{direction:ltr;font-weight:800;font-style:italic;font-size:10px;letter-spacing:.32em;color:#fff;opacity:.9;margin-top:4px}
+footer small{color:#77747b;font-size:12px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--cream);color:var(--ink);font-weight:800;padding:10px 18px;border-radius:12px;transition:.25s;z-index:5;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+[hidden]{display:none!important}
+@media (max-width:360px){.q{font-size:19px}.opts.grid4 .opt .t{font-size:26px}.week div{font-size:10.5px}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><svg viewBox="0 0 848 712"><use href="#tt-logo"/></svg></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="tt-g" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#FFF8E6"/><stop offset=".45" stop-color="#F6D88E"/><stop offset="1" stop-color="#F0B630"/>
+    </linearGradient>
+    <g id="tt-logo">
+      <path fill="url(#tt-g)" d="M40 258H165L127 450H0Z"/>
+      <path fill="url(#tt-g)" d="M236 97H404L285 612H120Z"/>
+      <path fill="url(#tt-g)" d="M462 0H625L568 251L848 245L790 450H522L462 712H300Z"/>
+    </g>
+  </defs>
+</svg>
+
+<main class="wrap">
+  <svg class="toplogo" direction="ltr" viewBox="0 0 457 131" role="img" aria-label="TRIPLE-T — Train - ToughenUp - Transform" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="tl-g" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#FFF8E6"/><stop offset=".45" stop-color="#F6D88E"/><stop offset="1" stop-color="#F0B630"/></linearGradient></defs>
+    <g transform="translate(17 8) scale(0.13797 0.14045)">
+      <path fill="url(#tl-g)" d="M40 258H165L127 450H0Z"/><path fill="url(#tl-g)" d="M236 97H404L285 612H120Z"/><path fill="url(#tl-g)" d="M462 0H625L568 251L848 245L790 450H522L462 712H300Z"/>
+    </g>
+    <path fill="#fff" fill-rule="evenodd" d="M371.00 51.38L371.12 53.25L372.75 54.88L391.12 54.88L392.62 53.75L393.12 52.00L392.75 50.12L391.50 49.00L372.50 49.00ZM431.38 31.50L404.50 31.50L399.38 36.50L399.25 41.62L411.50 41.62L412.38 42.62L407.62 75.62L415.75 75.38L420.38 42.25L421.38 41.62L434.38 41.25L435.00 36.62ZM334.50 31.50L329.25 37.75L324.88 71.25L328.38 75.88L355.38 75.88L359.88 71.38L360.75 66.12L333.38 65.62L334.75 58.88L353.38 58.75L355.12 49.50L354.38 48.75L336.25 48.75L336.62 42.75L337.50 41.62L364.12 41.62L364.88 36.00L361.38 31.50ZM291.50 31.62L286.00 67.38L286.12 71.75L289.38 75.88L316.62 75.75L320.88 71.38L321.75 66.12L294.38 65.62L299.12 32.38L298.38 31.50ZM280.62 31.62L253.50 31.50L248.38 36.50L243.00 75.75L250.75 75.38L253.50 58.88L276.50 58.88L281.00 54.38L283.88 36.50ZM255.25 42.50L256.38 41.62L274.38 41.62L275.12 42.88L274.25 48.00L273.38 48.88L255.50 48.88L254.75 48.25ZM241.38 31.50L234.50 31.50L233.88 32.38L227.62 75.00L228.25 75.88L235.00 75.88L235.88 75.00L241.75 34.25ZM194.50 32.00L190.00 37.62L184.75 75.50L192.75 75.38L195.50 58.88L209.75 58.88L210.75 59.88L213.50 75.38L221.50 75.75L218.62 59.12L223.62 53.38L225.75 36.12L222.38 31.50ZM197.25 42.50L198.38 41.62L216.38 41.62L217.12 42.88L216.25 48.00L215.38 48.88L197.50 48.88L196.75 48.25ZM182.38 31.50L155.50 31.50L150.38 36.50L150.25 41.62L162.50 41.62L163.38 42.62L158.62 75.62L166.75 75.38L171.38 42.25L172.38 41.62L185.38 41.25L186.00 36.62Z"/>
+    <g font-family="'Exo 2',sans-serif" font-weight="500" font-size="10.8" fill="#FEF9EF">
+      <text x="165" y="103.6" textLength="37" lengthAdjust="spacing">Train-</text>
+      <text x="208" y="103.6" textLength="69" lengthAdjust="spacing">ToughenUp</text>
+      <text x="283" y="103.6" textLength="4" lengthAdjust="spacing">-</text>
+      <text x="293" y="103.6" textLength="65" lengthAdjust="spacing" fill="#EFC154">Transform</text>
+    </g>
+    <g font-family="'Tajawal',sans-serif" font-weight="400" font-size="14" fill="#FEF9EF" text-anchor="middle" direction="rtl">
+      <text x="183" y="123">تمرّن</text>
+      <text x="242" y="123">تحدّى</text>
+      <text x="325" y="123" fill="#EFC154">تغيّر</text>
+    </g>
+  </svg>
+
+  <!-- ===== البداية ===== -->
+  <section id="intro">
+    <header class="hero">
+      <h1>وش الجدول اللي <span class="gtext">يناسبك؟</span></h1>
+      <p>جاوب على 10 أسئلة قصيرة، ونحدد مستواك والجدول الأنسب لأيامك وهدفك من جداول تربل تي الستة.</p>
+    </header>
+    <div class="card">
+      <ul class="points">
+        <li><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><div><b>أيامك المتاحة</b><span>كم يوم تقدر تلتزم فيه فعليًا</span></div></li>
+        <li><svg viewBox="0 0 24 24"><path d="M4 20V14M10 20V9M16 20V4M2.5 20h19"/></svg><div><b>مستواك وخبرتك</b><span>من متى تتمرن وكيف أداؤك للتمارين الأساسية</span></div></li>
+        <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg><div><b>هدفك وتركيزك</b><span>نزول دهون، بناء عضل، أو قوة ولياقة</span></div></li>
+      </ul>
+      <button class="btn" id="start" type="button"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>ابدأ الاختبار</button>
+    </div>
+  </section>
+
+  <!-- ===== الأسئلة ===== -->
+  <section id="quiz" hidden>
+    <div class="card">
+      <div class="top">
+        <button class="back" id="back" type="button" aria-label="السؤال السابق"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <div class="prog"><div class="bar"><i id="pbar"></i></div><div class="cnt"><span id="pnum"></span><span id="ptag"></span></div></div>
+      </div>
+      <div id="step"></div>
+    </div>
+  </section>
+
+  <!-- ===== النتيجة ===== -->
+  <section id="result" aria-live="polite">
+    <div class="card">
+      <div class="lvl"><span class="cap">مستواك</span><span class="name gtext" id="r-lvl"></span></div>
+      <div class="meter" aria-hidden="true"><i id="r-meter"></i></div>
+      <div class="meter-l"><span>مبتدئ</span><span>متوسط</span><span>متقدم</span></div>
+    </div>
+
+    <div class="card">
+      <div class="pick">
+        <div class="cap">الجدول الأنسب لك</div>
+        <div class="big gtext" id="r-name"></div>
+        <div class="days" id="r-days"></div>
+      </div>
+      <div class="match"><span>نسبة التوافق</span><div class="bar"><i id="r-mbar"></i></div><b id="r-match"></b></div>
+      <div class="week" id="r-week" aria-label="شكل الأسبوع"></div>
+      <p class="note" id="r-note"></p>
+      <p class="note warn" id="r-warn"></p>
+    </div>
+
+    <div class="card">
+      <h2 class="h2">ليش هذا الجدول؟</h2>
+      <ul class="tips" id="r-why"></ul>
+    </div>
+
+    <div class="card">
+      <h2 class="h2">طريقك بعده</h2>
+      <div class="path" id="r-path"></div>
+      <p class="note" id="r-next"></p>
+      <div id="r-alt-wrap">
+        <h2 class="h2" style="margin-top:18px">خيار ثاني يناسبك</h2>
+        <div class="alt"><div><b id="r-alt"></b><span id="r-alt-d"></span></div><em id="r-alt-m"></em></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ver">
+        <svg viewBox="0 0 24 24"><path d="M6 3.5h9l3 3V20.5H6z"/><path d="M9 10h6M9 13.5h6M9 17h3.5"/></svg>
+        <div><b id="r-ver"></b><p id="r-ver-d"></p></div>
+      </div>
+    </div>
+
+    <div class="card cta">
+      <svg class="mark" viewBox="0 0 848 712" aria-hidden="true"><use href="#tt-logo"/></svg>
+      <h2 class="h2">جاهز تبدأ؟</h2>
+      <p>أرسل نتيجتك للمدرب على واتساب، ويأكد لك الجدول قبل ما تبدأ.</p>
+      <a class="btn" id="wa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.8A8 8 0 1 1 8 19z"/><path d="M9.5 9.5c0 3 2 5 5 5"/></svg>أرسل نتيجتي للمدرب</a>
+      <a class="btn ghost" id="cta-store" href="#" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>تصفح الجداول</a>
+      <button class="btn ghost" type="button" id="share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1"/></svg>شارك الاختبار مع صاحبك</button>
+      <button class="btn ghost" type="button" id="again"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/><path d="M4 4v4.5h4.5"/></svg>أعد الاختبار</button>
+    </div>
+  </section>
+
+  <p class="disc">النتيجة ترشيح مبدئي مبني على إجاباتك، والمدرب يقدر يعدّلها. إذا عندك إصابة أو حالة صحية راجع مختص قبل تبدأ. إجاباتك ما تنرسل لأي جهة إلا إذا أرسلتها أنت على واتساب.</p>
+
+  <footer>
+    <div class="lock">
+      <svg viewBox="0 0 848 712" aria-hidden="true"><use href="#tt-logo"/></svg>
+      <div class="names"><span class="ar">تربل <b>تي</b></span><span class="en">TRIPLE-T</span></div>
+    </div>
+    <small>© <span id="yr"></span> تربل تي</small>
+  </footer>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== الإعدادات: غيّر هنا ===== */
+const CONFIG = {
+  whatsapp: '966503842947',   // رقم واتساب المدرب بدون + أو أصفار
+  storeUrl: '#',              // رابط صفحة الجداول في المتجر (اتركه # عشان يختفي الزر)
+};
+
+/* ===== الجداول الستة (نفس المحتوى في النسخة الخاصة والعامة) =====
+   lv: نطاق المستوى المناسب من 0 إلى 10
+   fit: نقاط إضافية حسب الهدف والتركيز
+   week: توزيع الأسبوع (R = راحة)                                   */
+const PROGRAMS = [
+  { id:'fb3',  name:'فل بدي',                days:3, lv:[0,4],
+    fit:{fat:6, strength:4, muscle:0, balanced:5, upper:0, legs:2},
+    week:['فل بدي','R','فل بدي','R','فل بدي','R','R'],
+    about:'كل عضلات الجسم في كل حصة، 3 أيام بينها راحة.' },
+  { id:'ul4',  name:'علوي / سفلي',           days:4, lv:[2,6],
+    fit:{fat:4, strength:6, muscle:2, balanced:4, upper:1, legs:5},
+    week:['علوي','سفلي','R','علوي','سفلي','R','R'],
+    about:'يوم للجزء العلوي ويوم للسفلي، كل عضلة تتمرن مرتين بالأسبوع.' },
+  { id:'pplm5',name:'دفع سحب أرجل مدمج',     days:5, lv:[4,7.5],
+    fit:{fat:3, strength:4, muscle:4, balanced:6, upper:2, legs:3},
+    week:['دفع','سحب','أرجل','R','علوي','سفلي','R'],
+    about:'دفع وسحب وأرجل، ومعها يومين علوي وسفلي يكررون العضلات.' },
+  { id:'bro5', name:'برو سبليت',             days:5, lv:[4,8],
+    fit:{fat:1, strength:1, muscle:6, balanced:1, upper:6, legs:0},
+    week:['صدر','ظهر','أكتاف','أرجل','ذراع وبطن','R','R'],
+    about:'كل يوم لعضلة أو اثنتين، حجم تمرين عالي لكل عضلة.' },
+  { id:'ppl6', name:'دفع سحب أرجل',          days:6, lv:[6,10],
+    fit:{fat:3, strength:3, muscle:6, balanced:6, upper:2, legs:5},
+    week:['دفع','سحب','أرجل','دفع','سحب','أرجل','R'],
+    about:'دفع وسحب وأرجل مرتين بالأسبوع، تكرار وحجم عاليين.' },
+  { id:'arn6', name:'أرنولد سبليت',          days:6, lv:[7,10],
+    fit:{fat:1, strength:2, muscle:7, balanced:2, upper:7, legs:2},
+    week:['صدر وظهر','أكتاف وذراع','أرجل','صدر وظهر','أكتاف وذراع','أرجل','R'],
+    about:'صدر مع ظهر، أكتاف مع ذراع، وأرجل، مرتين بالأسبوع. للمتقدمين.' },
+];
+const PATH = ['fb3','ul4','pplm5','ppl6'];   // التدرج الطبيعي من جدول لجدول
+
+/* ===== الأسئلة ===== */
+const ICONS = {
+  cal:'<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  pause:'<circle cx="12" cy="12" r="8.5"/><path d="M10 9v6M14 9v6"/>',
+  bar:'<path d="M2.5 12h2M19.5 12h2M6.5 8v8M17.5 8v8M4.5 10v4M19.5 10v4M6.5 12h11"/>',
+  check:'<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="m8 12 3 3 5-6"/>',
+  moon:'<path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/>',
+  target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/>',
+  body:'<circle cx="12" cy="5" r="2.5"/><path d="M6 9.5h12M12 9.5v5.5M12 15l-3 6M12 15l3 6"/>',
+  aid:'<rect x="3.5" y="6.5" width="17" height="13" rx="2.5"/><path d="M9 6.5V4.5h6v2M12 10v6M9 13h6"/>',
+  note:'<path d="M6 3.5h9l3 3V20.5H6z"/><path d="M9 10h6M9 13.5h6M9 17h3.5"/>',
+};
+const QUESTIONS = [
+  { key:'days', tag:'الأيام', icon:'cal', layout:'grid4',
+    q:'كم يوم تقدر تتمرن بالأسبوع؟', hint:'اختار العدد اللي تقدر تلتزم فيه كل أسبوع، مو الأسبوع المثالي.',
+    opts:[{v:3,t:'3',d:'أيام'},{v:4,t:'4',d:'أيام'},{v:5,t:'5',d:'أيام'},{v:6,t:'6',d:'أيام'}] },
+  { key:'exp', tag:'الخبرة', icon:'clock',
+    q:'من متى وأنت تتمرن حديد بانتظام؟',
+    opts:[{v:0,t:'ما بديت أو أول مرة',d:'جديد على النادي'},
+          {v:1.5,t:'أقل من 6 شهور'},
+          {v:3.5,t:'من 6 شهور إلى سنة'},
+          {v:5.5,t:'من سنة إلى 3 سنوات'},
+          {v:7.5,t:'أكثر من 3 سنوات'}] },
+  { key:'gap', tag:'الانقطاع', icon:'pause', skip:a => a.exp === 0,
+    q:'هل انقطعت عن التمرين مؤخرًا؟',
+    opts:[{v:0,t:'لا، أتمرن حاليًا'},
+          {v:1,t:'انقطعت من شهر إلى 3 شهور'},
+          {v:2.5,t:'انقطعت أكثر من 3 شهور'}] },
+  { key:'tech', tag:'الأداء', icon:'bar',
+    q:'كيف أداؤك للتمارين الأساسية؟', hint:'مثل السكوات، البنش بريس، الديدلفت، السحب.',
+    opts:[{v:-1.5,t:'ما أعرفها أو ما جربتها'},
+          {v:0,t:'أعرفها بس أحتاج تصحيح',d:'أحس الحركة مو مضبوطة دائمًا'},
+          {v:2,t:'أؤديها بثقة',d:'وأزيد الأوزان بشكل منتظم'}] },
+  { key:'commit', tag:'الالتزام', icon:'check',
+    q:'آخر 3 شهور، كم يوم كنت تتمرن فعليًا بالأسبوع؟', hint:'كن صريح، هذا أهم سؤال عشان الجدول يمشي معك.',
+    opts:[{v:3,t:'ولا يوم تقريبًا'},
+          {v:4,t:'يوم أو يومين'},
+          {v:5,t:'3 إلى 4 أيام'},
+          {v:6,t:'5 أيام أو أكثر'}] },
+  { key:'rec', tag:'الاستشفاء', icon:'moon',
+    q:'كيف نومك وضغط يومك؟',
+    opts:[{v:-1,t:'نوم أقل من 6 ساعات',d:'أو شغل بدني متعب أو ضغط عالي'},
+          {v:0,t:'متوسط',d:'6 إلى 7 ساعات نوم'},
+          {v:1,t:'ممتاز',d:'7 ساعات أو أكثر وضغط قليل'}] },
+  { key:'goal', tag:'الهدف', icon:'target',
+    q:'وش هدفك الأساسي؟',
+    opts:[{v:'fat',t:'نزول دهون وشد',d:'أبي أنشف وأبين أنحف'},
+          {v:'muscle',t:'بناء عضل وحجم',d:'أبي أكبر وأبين أضخم'},
+          {v:'strength',t:'قوة ولياقة عامة',d:'أبي أصير أقوى وجسمي أنشط'}] },
+  { key:'focus', tag:'التركيز', icon:'body',
+    q:'وين تبي يكون تركيزك أكثر؟',
+    opts:[{v:'balanced',t:'متوازن لكل الجسم'},
+          {v:'upper',t:'الجزء العلوي',d:'صدر، أكتاف، ذراع، ظهر'},
+          {v:'legs',t:'الأرجل والجزء السفلي'}] },
+  { key:'injury', tag:'الإصابات', icon:'aid',
+    q:'عندك إصابة أو ألم يمنعك من تمارين معينة؟',
+    opts:[{v:0,t:'لا، الحمد لله'},
+          {v:1,t:'ألم خفيف أو إصابة قديمة',d:'أقدر أتمرن بس أنتبه لبعض الحركات'},
+          {v:2,t:'إصابة حالية',d:'تمنعني من تمارين معينة'}] },
+  { key:'coach', tag:'النسخة', icon:'note',
+    q:'تبي المدرب يكتب لك ملاحظات خاصة على جدولك؟', hint:'التمارين نفسها في النسختين، الفرق في ملاحظات المدرب.',
+    opts:[{v:1,t:'إيه، أبي ملاحظات خاصة فيني',d:'النسخة الخاصة'},
+          {v:0,t:'لا، الجدول يكفيني',d:'النسخة العامة'}] },
+];
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const byId = id => PROGRAMS.find(p => p.id === id);
+  $('yr').textContent = new Date().getFullYear();
+  if (CONFIG.storeUrl && CONFIG.storeUrl !== '#') { $('cta-store').href = CONFIG.storeUrl; $('cta-store').hidden = false; }
+
+  let ans = {}, i = 0;
+  const visible = () => QUESTIONS.filter(q => !(q.skip && q.skip(ans)));
+
+  function render(){
+    const qs = visible(), q = qs[i];
+    $('pbar').style.width = (i / qs.length * 100) + '%';
+    $('pnum').textContent = `سؤال ${i+1} من ${qs.length}`;
+    $('ptag').textContent = q.tag;
+    $('back').disabled = i === 0;
+    const sel = ans[q.key];
+    $('step').innerHTML = `<div class="step">
+      <div class="qhead"><svg viewBox="0 0 24 24">${ICONS[q.icon]}</svg><h2 class="q">${q.q}</h2></div>
+      <p class="qhint">${q.hint || ''}</p>
+      <div class="opts ${q.layout||''}" role="radiogroup" aria-label="${q.q}">
+        ${q.opts.map((o,k) => `<button type="button" class="opt${sel===o.v?' on':''}" role="radio" aria-checked="${sel===o.v}" data-k="${k}">
+          <span class="dot"></span><span><span class="t">${o.t}</span>${o.d?`<span class="d">${o.d}</span>`:''}</span></button>`).join('')}
+      </div></div>`;
+    $('step').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
+      ans[q.key] = q.opts[+b.dataset.k].v;
+      $('step').querySelectorAll('.opt').forEach(x => { x.classList.remove('on'); x.setAttribute('aria-checked','false'); });
+      b.classList.add('on'); b.setAttribute('aria-checked','true');
+      setTimeout(next, 220);
+    }));
+  }
+  function next(){
+    const qs = visible();
+    if (i < qs.length - 1) { i++; render(); }
+    else { $('pbar').style.width = '100%'; showResult(); }
+  }
+  $('back').addEventListener('click', () => { if (i > 0) { i--; render(); } });
+  $('start').addEventListener('click', () => { $('intro').hidden = true; $('quiz').hidden = false; i = 0; render(); window.scrollTo({top:0,behavior:'smooth'}); });
+  $('again').addEventListener('click', () => { ans = {}; i = 0; $('result').classList.remove('on'); $('quiz').hidden = false; render(); window.scrollTo({top:0,behavior:'smooth'}); });
+
+  /* ===== الحساب ===== */
+  function evaluate(a){
+    // المستوى من 0 إلى 10
+    const L = Math.max(0, Math.min(10, a.exp - (a.gap||0) + a.tech));
+    const level = L < 3 ? 'مبتدئ' : L < 6.5 ? 'متوسط' : 'متقدم';
+
+    // عدد الأيام الواقعي: الأيام المتاحة، بحد أقصى يوم فوق التزامك الفعلي (يومين لصاحب الخبرة الراجع)، وأقل إذا استشفاؤك ضعيف أو عندك إصابة
+    let target = Math.min(a.days, a.commit + (a.exp >= 5.5 ? 1 : 0));
+    if (a.rec < 0) target = Math.max(3, Math.min(target, a.days - 1));
+    if (a.injury === 2) target = Math.min(target, 4);
+    if (L < 1) target = 3;
+
+    const scored = PROGRAMS.filter(p => p.days <= a.days).map(p => {
+      let s = 100;
+      s -= 16 * Math.abs(p.days - target);
+      if (L < p.lv[0]) s -= 14 * (p.lv[0] - L);
+      if (L > p.lv[1]) s -= 5 * (L - p.lv[1]);
+      s += p.fit[a.goal] + p.fit[a.focus] - 6;
+      if (a.injury === 2 && p.days >= 5) s -= 10;
+      if (a.rec < 0 && p.days === 6) s -= 8;
+      return {p, s};
+    }).sort((x,y) => y.s - x.s);
+    // نسبة التوافق: الأول بحد أقصى 97%، والبقية أقل منه دائمًا
+    let prev = 100;
+    scored.forEach(x => { x.match = Math.max(35, Math.min(97, Math.round(x.s), prev - 3)); prev = x.match; });
+
+    return {L, level, target, best: scored[0], alt: scored[1]};
+  }
+
+  function why(a, r){
+    const p = r.best.p, out = [];
+    if (p.days === a.days) out.push(`يطابق عدد الأيام اللي تقدر تتمرنها (${a.days} أيام).`);
+    else out.push(`اخترت ${a.days} أيام، بس بديناك بـ ${p.days} أيام ${a.commit < a.days ? 'لأن التزامك آخر 3 شهور كان أقل، والأفضل ترفع الأيام بالتدريج' : a.rec < 0 ? 'لأن نومك وضغطك يحتاجون أيام راحة أكثر' : a.injury === 2 ? 'عشان تعطي الإصابة وقت ترتاح' : 'عشان يتناسب مع مستواك الحالي'}.`);
+    if (r.L < p.lv[0] + 1) out.push(`مناسب لمستواك (${r.level}): يركز على التمارين الأساسية وتعلّم الأداء الصح قبل ما تكثر الحجم.`);
+    else if (r.L > p.lv[1]) out.push(`مستواك أعلى من هذا الجدول، بس الأيام المتاحة تحدد الاختيار. ارفع الأوزان بقوة واستغل كل حصة.`);
+    else out.push(`حجم التمرين فيه مناسب لمستواك (${r.level}).`);
+    const g = {fat:'نزول الدهون', muscle:'بناء العضل', strength:'القوة واللياقة'}[a.goal];
+    if (p.fit[a.goal] >= 4) out.push(`يخدم هدفك (${g}) ${a.goal==='fat'?'لأنه يشغّل عضلات كثيرة كل حصة ويرفع الحرق، ومعه الكارديو بعد التمرين':a.goal==='muscle'?'لأن كل عضلة تاخذ حجم تمرين كافي للنمو':'لأنه مبني على التمارين المركبة وتكرار كل عضلة مرتين'}.`);
+    else out.push(`لهدفك (${g}) الجدول يمشي، والأهم تلتزم بالكارديو والأكل حسب هدفك.`);
+    if (a.focus === 'upper' && p.fit.upper >= 5) out.push('فيه تركيز أكبر على الصدر والأكتاف والذراع مثل ما تبي.');
+    if (a.focus === 'legs' && p.fit.legs >= 5) out.push('الأرجل تتمرن مرتين بالأسبوع، مناسب لتركيزك على الجزء السفلي.');
+    out.push(p.about);
+    return out;
+  }
+
+  function showResult(){
+    const a = ans, r = evaluate(a), p = r.best.p;
+    $('quiz').hidden = true;
+    $('r-lvl').textContent = r.level;
+    $('r-meter').style.right = '0';
+    setTimeout(() => { $('r-meter').style.right = (r.L / 10 * 100) + '%'; }, 80);
+    $('r-name').textContent = p.name;
+    $('r-days').textContent = `${p.days} أيام بالأسبوع`;
+    $('r-match').textContent = r.best.match + '%';
+    $('r-mbar').style.width = '0';
+    setTimeout(() => { $('r-mbar').style.width = r.best.match + '%'; }, 80);
+    let d = 0;
+    $('r-week').innerHTML = p.week.map(x => x === 'R' ? '<div class="rs">راحة</div>' : `<div class="tr"><small>يوم ${++d}</small>${x}</div>`).join('');
+
+    $('r-note').textContent = a.days > p.days ? `عندك ${a.days} أيام: استغل أيام الراحة بكارديو خفيف أو مشي 30 دقيقة.` : '';
+    $('r-warn').textContent = a.injury === 2 ? 'عندك إصابة حالية: كلّم المدرب قبل ما تبدأ عشان يستبدل التمارين اللي تضغط عليها، والأفضل تاخذ النسخة الخاصة.'
+      : a.injury === 1 ? 'عندك ألم خفيف أو إصابة قديمة: خفف الوزن بأي تمرين يضايقك، وبلّغ المدرب.' : '';
+    $('r-why').innerHTML = why(a, r).map(t => `<li>${t}</li>`).join('');
+
+    // التدرج
+    const arrow = '<svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>';
+    const pathIds = PATH.includes(p.id) ? PATH : PATH.slice(0, PATH.findIndex(x => byId(x).days >= p.days)).concat(p.id, p.days < 6 ? ['ppl6'] : []);
+    $('r-path').innerHTML = pathIds.map(x => `<span class="${x===p.id?'now':''}">${byId(x).name} ${byId(x).days}</span>`).join(arrow);
+    const nextP = PROGRAMS.find(x => x.days > p.days && x.days <= a.days && PATH.includes(x.id));
+    $('r-next').textContent = nextP
+      ? `التزم فيه 8 إلى 12 أسبوع، ولما تثبت أوزانك ويصير الجدول سهل عليك، انتقل لـ ${nextP.name} ${nextP.days} أيام.`
+      : p.days === 6 ? 'هذا أعلى مستوى في جداولنا. استمر 8 إلى 12 أسبوع، وبعدها بدّل بين دفع سحب أرجل وأرنولد عشان تكسر الثبات.'
+      : `التزم فيه 8 إلى 12 أسبوع، ولو زادت أيامك المتاحة بعدها أعد الاختبار.`;
+
+    const alt = r.alt && r.alt.match >= 55 ? r.alt : null;
+    $('r-alt-wrap').hidden = !alt;
+    if (alt) { $('r-alt').textContent = `${alt.p.name} ${alt.p.days} أيام`; $('r-alt-d').textContent = alt.p.about; $('r-alt-m').textContent = alt.match + '%'; }
+
+    const priv = a.coach === 1 || a.injury === 2;
+    $('r-ver').textContent = priv ? 'النسخة الخاصة' : 'النسخة العامة';
+    $('r-ver-d').textContent = priv
+      ? 'نفس التمارين، ومعها ملاحظات من المدرب مكتوبة لك تحت كل يوم.'
+      : 'الجدول كامل بالتمارين والمجموعات والعدات وفيديو لكل تمرين.';
+
+    // رسالة واتساب للمدرب
+    const label = (k) => { const q = QUESTIONS.find(x => x.key === k); const o = q.opts.find(x => x.v === a[k]); return o ? o.t : '-'; };
+    const msg = [
+      'السلام عليكم، سويت اختبار الجدول وهذي نتيجتي:',
+      `الجدول المقترح: ${p.name} ${p.days} أيام (${priv ? 'النسخة الخاصة' : 'النسخة العامة'})`,
+      `المستوى: ${r.level}`,
+      `الأيام المتاحة: ${a.days}`,
+      `الخبرة: ${label('exp')}`,
+      a.exp ? `الانقطاع: ${label('gap')}` : null,
+      `الأداء: ${label('tech')}`,
+      `الالتزام آخر 3 شهور: ${label('commit')}`,
+      `النوم والضغط: ${label('rec')}`,
+      `الهدف: ${label('goal')}`,
+      `التركيز: ${label('focus')}`,
+      `الإصابات: ${label('injury')}`,
+    ].filter(Boolean).join('\n');
+    $('wa').href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+
+    const res = $('result'); res.classList.remove('on'); void res.offsetWidth; res.classList.add('on');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 1800); }
+  $('share').addEventListener('click', async () => {
+    const data = {title:'وش الجدول اللي يناسبك؟ | تربل تي', text:'10 أسئلة تحدد مستواك والجدول الأنسب لك من تربل تي', url:location.href};
+    try {
+      if (navigator.share) { await navigator.share(data); return; }
+      await navigator.clipboard.writeText(location.href); toast('انتسخ الرابط');
+    } catch (e) { if (e && e.name !== 'AbortError') toast('انسخ الرابط من المتصفح'); }
+  });
+
+  // للتجربة: window.__tt = {evaluate}
+  window.__tt = {evaluate, PROGRAMS};
+})();
+</script>
+</body>
+</html>
