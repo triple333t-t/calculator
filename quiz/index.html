@@ -235,7 +235,6 @@ footer small{color:#77747b;font-size:12px}
       </div>
       <div class="match"><span>نسبة التوافق</span><div class="bar"><i id="r-mbar"></i></div><b id="r-match"></b></div>
       <div class="week" id="r-week" aria-label="شكل الأسبوع"></div>
-      <p class="note" id="r-note"></p>
       <p class="note warn" id="r-warn"></p>
     </div>
 
@@ -247,7 +246,6 @@ footer small{color:#77747b;font-size:12px}
     <div class="card">
       <h2 class="h2">طريقك بعده</h2>
       <div class="path" id="r-path"></div>
-      <p class="note" id="r-next"></p>
       <div id="r-alt-wrap">
         <h2 class="h2" style="margin-top:18px">خيار ثاني يناسبك</h2>
         <div class="alt"><div><b id="r-alt"></b><span id="r-alt-d"></span></div><em id="r-alt-m"></em></div>
@@ -264,15 +262,13 @@ footer small{color:#77747b;font-size:12px}
     <div class="card cta">
       <svg class="mark" viewBox="0 0 848 712" aria-hidden="true"><use href="#tt-logo"/></svg>
       <h2 class="h2">جاهز تبدأ؟</h2>
-      <p>أرسل نتيجتك للمدرب على واتساب، ويأكد لك الجدول قبل ما تبدأ.</p>
-      <a class="btn" id="wa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.8A8 8 0 1 1 8 19z"/><path d="M9.5 9.5c0 3 2 5 5 5"/></svg>أرسل نتيجتي للمدرب</a>
       <a class="btn ghost" id="cta-store" href="#" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 11a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>تصفح الجداول</a>
       <button class="btn ghost" type="button" id="share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1"/></svg>شارك الاختبار مع صاحبك</button>
       <button class="btn ghost" type="button" id="again"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/><path d="M4 4v4.5h4.5"/></svg>أعد الاختبار</button>
     </div>
   </section>
 
-  <p class="disc">النتيجة ترشيح مبدئي مبني على إجاباتك، والمدرب يقدر يعدّلها. إذا عندك إصابة أو حالة صحية راجع مختص قبل تبدأ. إجاباتك ما تنرسل لأي جهة إلا إذا أرسلتها أنت على واتساب.</p>
+  <p class="disc">النتيجة ترشيح مبدئي مبني على إجاباتك، والمدرب يقدر يعدّلها. إذا عندك إصابة أو حالة صحية راجع مختص قبل تبدأ. إجاباتك ما تنرسل لأي جهة، كل شي يصير على جهازك.</p>
 
   <footer>
     <div class="lock">
@@ -287,7 +283,6 @@ footer small{color:#77747b;font-size:12px}
 <script>
 /* ===== الإعدادات: غيّر هنا ===== */
 const CONFIG = {
-  whatsapp: '966503842947',   // رقم واتساب المدرب بدون + أو أصفار
   storeUrl: '#',              // رابط صفحة الجداول في المتجر (اتركه # عشان يختفي الزر)
 };
 
@@ -487,7 +482,6 @@ const QUESTIONS = [
     let d = 0;
     $('r-week').innerHTML = p.week.map(x => x === 'R' ? '<div class="rs">راحة</div>' : `<div class="tr"><small>يوم ${++d}</small>${x}</div>`).join('');
 
-    $('r-note').textContent = a.days > p.days ? `عندك ${a.days} أيام: استغل أيام الراحة بكارديو خفيف أو مشي 30 دقيقة.` : '';
     $('r-warn').textContent = a.injury === 2 ? 'عندك إصابة حالية: كلّم المدرب قبل ما تبدأ عشان يستبدل التمارين اللي تضغط عليها، والأفضل تاخذ النسخة الخاصة.'
       : a.injury === 1 ? 'عندك ألم خفيف أو إصابة قديمة: خفف الوزن بأي تمرين يضايقك، وبلّغ المدرب.' : '';
     $('r-why').innerHTML = why(a, r).map(t => `<li>${t}</li>`).join('');
@@ -496,11 +490,6 @@ const QUESTIONS = [
     const arrow = '<svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>';
     const pathIds = PATH.includes(p.id) ? PATH : PATH.slice(0, PATH.findIndex(x => byId(x).days >= p.days)).concat(p.id, p.days < 6 ? ['ppl6'] : []);
     $('r-path').innerHTML = pathIds.map(x => `<span class="${x===p.id?'now':''}">${byId(x).name} ${byId(x).days}</span>`).join(arrow);
-    const nextP = PROGRAMS.find(x => x.days > p.days && x.days <= a.days && PATH.includes(x.id));
-    $('r-next').textContent = nextP
-      ? `التزم فيه 8 إلى 12 أسبوع، ولما تثبت أوزانك ويصير الجدول سهل عليك، انتقل لـ ${nextP.name} ${nextP.days} أيام.`
-      : p.days === 6 ? 'هذا أعلى مستوى في جداولنا. استمر 8 إلى 12 أسبوع، وبعدها بدّل بين دفع سحب أرجل وأرنولد عشان تكسر الثبات.'
-      : `التزم فيه 8 إلى 12 أسبوع، ولو زادت أيامك المتاحة بعدها أعد الاختبار.`;
 
     const alt = r.alt && r.alt.match >= 55 ? r.alt : null;
     $('r-alt-wrap').hidden = !alt;
@@ -512,23 +501,6 @@ const QUESTIONS = [
       ? 'نفس التمارين، ومعها ملاحظات من المدرب مكتوبة لك تحت كل يوم.'
       : 'الجدول كامل بالتمارين والمجموعات والعدات وفيديو لكل تمرين.';
 
-    // رسالة واتساب للمدرب
-    const label = (k) => { const q = QUESTIONS.find(x => x.key === k); const o = q.opts.find(x => x.v === a[k]); return o ? o.t : '-'; };
-    const msg = [
-      'السلام عليكم، سويت اختبار الجدول وهذي نتيجتي:',
-      `الجدول المقترح: ${p.name} ${p.days} أيام (${priv ? 'النسخة الخاصة' : 'النسخة العامة'})`,
-      `المستوى: ${r.level}`,
-      `الأيام المتاحة: ${a.days}`,
-      `الخبرة: ${label('exp')}`,
-      a.exp ? `الانقطاع: ${label('gap')}` : null,
-      `الأداء: ${label('tech')}`,
-      `الالتزام آخر 3 شهور: ${label('commit')}`,
-      `النوم والضغط: ${label('rec')}`,
-      `الهدف: ${label('goal')}`,
-      `التركيز: ${label('focus')}`,
-      `الإصابات: ${label('injury')}`,
-    ].filter(Boolean).join('\n');
-    $('wa').href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
 
     const res = $('result'); res.classList.remove('on'); void res.offsetWidth; res.classList.add('on');
     window.scrollTo({top:0,behavior:'smooth'});
